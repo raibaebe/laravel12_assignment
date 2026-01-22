@@ -11,14 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout code (full history)
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
-
-      - name: Unshallow repository
-        run: |
-          git fetch --prune --unshallow || git fetch --prune --depth=1000000
+          fetch-depth: 0
 
       - name: Deploy to Heroku
         env:
