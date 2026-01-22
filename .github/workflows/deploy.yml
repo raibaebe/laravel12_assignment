@@ -3,7 +3,7 @@ name: Deploy to Heroku
 on:
   push:
     branches:
-      - main  # Trigger deployment when code is pushed to the 'main' branch
+      - [ "main", "master" ]
 
 jobs:
   deploy:
@@ -27,12 +27,14 @@ jobs:
           curl https://cli-assets.heroku.com/install.sh | sh
           echo "Heroku CLI installed"
 
-      - name: Heroku login
-        run: |
-          echo "Logging into Heroku..."
-          echo ${{ secrets.HEROKU_API_KEY }} | heroku auth:token
-
       - name: Deploy to Heroku
-        run: |
-          git remote add heroku https://git.heroku.com/lavarel-app-task.git
-          git push heroku main
+  env:
+    HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+  run: |
+    git config user.email "actions@github.com"
+    git config user.name "GitHub Actions"
+
+    git remote remove heroku || true
+    git remote add heroku https://heroku:${HEROKU_API_KEY}@git.heroku.com/laravel-app-task.git
+
+    git push he
