@@ -1,0 +1,46 @@
+name: Deploy to Heroku
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout (full history)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Make sure repo is NOT shallow
+        run: |
+          set -e
+          echo "Shallow before fetch? -> $(git rev-parse --is-shallow-repository)"
+          git remote -v
+          # if still shallow for any reason, force full fetch from origin
+          git fetch origin --prune --tags --unshallow || true
+          git fetch --all --prune --tags
+          echo "Shallow after fetch?  -> $(git rev-parse --is-shallow-repository)"
+          git log -1 --oneline
+
+      - name: Deploy to Heroku
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: |
+          set -e
+          export GIT_TERMINAL_PROMPT=0
+
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+
+          # Recreate heroku remote cleanly (no error noise)
+          git remote add heroku https://heroku:${HEROKU_API_KEY}@git.heroku.com/laravel-app-task.git || true
+          git remote set-url heroku https://heroku:${HEROKU_API_KEY}@git.heroku.com/laravel-app-task.git
+
+          # Push current commit to Heroku (choose main for Heroku)
+          git push heroku HEAD:main --force
