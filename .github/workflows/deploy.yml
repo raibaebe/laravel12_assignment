@@ -23,6 +23,7 @@ jobs:
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
 
+          git remote remove heroku 2>/dev/null || true
           git remote add heroku https://heroku:${HEROKU_API_KEY}@git.heroku.com/laravel-app-task.git
 
           git push heroku HEAD:main --force
