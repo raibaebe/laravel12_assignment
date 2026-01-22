@@ -17,8 +17,8 @@ Follow the steps below to set up the project locally:
 
 ### 1. Clone the repository:
 ```bash
-git clone <your-repository-url>
-cd <your-project-directory>
+git clone https://github.com/raibaebe/laravel12_assignment.git
+cd https://github.com/raibaebe/laravel12_assignment.git
 ```
 
 ### 2. Install dependencies:
