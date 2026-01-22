@@ -1,66 +1,92 @@
+# Laravel 12 Assignment
 
-# Service Desk Ticket System
+This project is a Laravel 12 application configured to run locally using **Laravel Sail (Docker)** and deployed on **Heroku**.
 
-## Description
-A Service Desk Ticket System built with Laravel. 
-Users can create support tickets, and admins can manage and update ticket statuses.
+---
 
-## Features
-- User registration and authentication
-- Users can create support tickets
-- Admin panel to view and manage all tickets
-- Role-based access control for users and admins
-- Ability for admins to update ticket statuses
+## Requirements
+- Docker Desktop (must be running)
+- Git
+- Composer 
 
-## Installation
-Follow the steps below to set up the project locally:
+---
 
-### 1. Clone the repository:
+## Installation (Local with Laravel Sail)
+
+### 1) Clone the repository
 ```bash
 git clone https://github.com/raibaebe/laravel12_assignment.git
-cd https://github.com/raibaebe/laravel12_assignment.git
+cd laravel12_assignment
 ```
 
-### 2. Install dependencies:
-```bash
-./vendor/bin/sail up -d
-./vendor/bin/sail composer install
-```
-
-### 3. Set up the environment file:
+### 2) Create environment file
 ```bash
 cp .env.example .env
 ```
 
-### 4. Generate the application key:
+### 3) Install PHP dependencies
+> This step is required to get the Sail binary.
+```bash
+composer install
+```
+
+### 4) Start Docker containers
+```bash
+./vendor/bin/sail up -d --build
+```
+
+### 5) Generate application key
 ```bash
 ./vendor/bin/sail artisan key:generate
 ```
 
-### 5. Run migrations:
+### 6) Run database migrations and seeders
 ```bash
-./vendor/bin/sail artisan migrate
+./vendor/bin/sail artisan migrate --seed
 ```
 
-### 6. Seed an admin user:
+> If you use a specific seeder (e.g. AdminSeeder):
 ```bash
 ./vendor/bin/sail artisan db:seed --class=AdminSeeder
 ```
 
-### 7. Access the app:
-Once everything is set up, access the app in your browser:
+### 7) (Optional) Frontend assets
+If the project uses Vite/Tailwind:
+```bash
+./vendor/bin/sail npm install
+./vendor/bin/sail npm run build
+```
+
+### 8) Open the application
 ```
 http://localhost
 ```
 
-You can log in as a regular user or admin (credentials provided in the seeder).
+---
 
-## Tech Stack:
-- Laravel 12.x
-- PHP 8.5
-- MySQL
-- Docker (Laravel Sail)
-- Blade + Tailwind CSS
+## Database
+The project uses a relational database with migrations and seeders.
+A database dump is provided in `dump.sql`.
 
-## Author:
+---
+
+## Deployment
+The application is deployed to Heroku using GitHub Actions CI/CD.
+
+---
+
+## Notes
+- Session handling in production uses cookies.
+- `.env` is not committed; use `.env.example` as reference.
+
+---
+
+## Screenshots
+See the `screenshots/` directory for:
+- User registration
+- User dashboard / requests list
+- Admin panel
+
+---
+## Author
 Kassymkyzy Raikhan
