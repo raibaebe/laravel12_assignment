@@ -11,8 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout code (full history)
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Deploy to Heroku
         env:
@@ -21,7 +23,6 @@ jobs:
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
 
-          git remote remove heroku || true
           git remote add heroku https://heroku:${HEROKU_API_KEY}@git.heroku.com/laravel-app-task.git
 
           git push heroku HEAD:main --force
