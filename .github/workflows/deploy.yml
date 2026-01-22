@@ -3,7 +3,7 @@ name: Deploy to Heroku
 on:
   push:
     branches:
-      - main 
+      - main  # Trigger deployment when code is pushed to the 'main' branch
 
 jobs:
   deploy:
@@ -15,19 +15,24 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.5'
+          php-version: '8.5'  
+          extensions: mbstring, bcmath, zip, curl  
 
       - name: Install dependencies
         run: |
           composer install --no-progress --prefer-dist
 
       - name: Set up Heroku CLI
-        uses: akshnz/heroku-cli-action@v1
-        with:
-          heroku_email: ${{ secrets.HEROKU_EMAIL }}
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+        run: |
+          curl https://cli-assets.heroku.com/install.sh | sh
+          echo "Heroku CLI installed"
+
+      - name: Heroku login
+        run: |
+          echo "Logging into Heroku..."
+          echo ${{ secrets.HEROKU_API_KEY }} | heroku auth:token
 
       - name: Deploy to Heroku
         run: |
-          git remote add heroku https://git.heroku.com/<your-heroku-app-name>.git
+          git remote add heroku https://git.heroku.com/lavarel-app-task.git
           git push heroku main
