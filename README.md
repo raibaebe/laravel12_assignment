@@ -50,7 +50,7 @@ composer install
 ./vendor/bin/sail artisan db:seed --class=AdminSeeder
 ```
 
-### 7) (Optional) Frontend assets
+### 7) Frontend assets
 If the project uses Vite/Tailwind:
 ```bash
 ./vendor/bin/sail npm install
