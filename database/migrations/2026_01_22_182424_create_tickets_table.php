@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('status')->default('new');
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
-            $table->date('due_date')->nullable();  
-            $table->foreignId('assignee_id')  
+            $table->date('due_date')->nullable();
+            $table->foreignId('assignee_id')
                 ->nullable()
                 ->constrained('users')
                 ->nullOnDelete();

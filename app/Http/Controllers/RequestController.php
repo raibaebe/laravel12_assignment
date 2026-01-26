@@ -1,8 +1,10 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Request as UserRequest;  // Make sure to import the correct model for requests
+
+// Make sure to import the correct model for requests
 
 class RequestController extends Controller
 {

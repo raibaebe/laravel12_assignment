@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class AdminMiddleware
 {
@@ -13,13 +12,12 @@ class AdminMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-   public function handle($request, Closure $next)
-        {
-            if (!auth()->user() || !auth()->user()->is_admin) {
-              return redirect('/');
-         }
-
-        return $next($request);
+    public function handle($request, Closure $next)
+    {
+        if (! auth()->user() || ! auth()->user()->is_admin) {
+            return redirect('/');
         }
 
+        return $next($request);
+    }
 }
