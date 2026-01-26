@@ -1,92 +1,130 @@
 # Laravel 12 Assignment
 
-This project is a Laravel 12 application configured to run locally using **Laravel Sail (Docker)** and deployed on **Heroku**.
+
+This project is a simple ServiceDesk web application built with **Laravel 12** as part of a technical assignment.  
+The application demonstrates user authentication, role-based access control, request management, and basic CI/CD integration.
 
 ---
 
-## Requirements
-- Docker Desktop (must be running)
-- Git
-- Composer 
+## Features
+
+### User Features
+- User registration and authentication
+- Personal dashboard
+- Create service requests with the following fields:
+  - Title
+  - Category
+  - Priority
+  - Description
+  - Due date
+- View a list of own requests and their statuses
+
+### Admin Features
+- View all service requests
+- Change request status:
+  - New
+  - In progress
+  - Completed
+  - Rejected
+
+### Roles
+- **User** — can create and view only their own requests
+- **Admin** — can view and manage all requests
+---
+## Tech Stack
+
+- Laravel 12
+- PHP 8.x
+- MySQL
+- Blade templates
+- TailwindCSS
+- Vite
+- Docker & Laravel Sail
+- GitHub Actions (CI)
 
 ---
 
-## Installation (Local with Laravel Sail)
+## Project Structure Overview
 
-### 1) Clone the repository
+- `app/Http/Controllers` — request and admin controllers
+- `app/Models` — Eloquent models
+- `database/migrations` — database schema
+- `database/seeders` — test users and demo data
+- `resources/views` — Blade templates
+- `routes/web.php` — web routes
+- `.github/workflows` — CI configuration
+
+---
+## Local Setup (Laravel Sail)
+
+### Requirements
+- Docker
+- Docker Compose
+
+### Installation
+
 ```bash
 git clone https://github.com/raibaebe/laravel12_assignment.git
 cd laravel12_assignment
-```
 
-### 2) Create environment file
-```bash
 cp .env.example .env
-```
-
-### 3) Install PHP dependencies
-> This step is required to get the Sail binary.
-```bash
 composer install
-```
 
-### 4) Start Docker containers
-```bash
 ./vendor/bin/sail up -d --build
-```
-
-### 5) Generate application key
-```bash
 ./vendor/bin/sail artisan key:generate
-```
-
-### 6) Run database migrations and seeders
-```bash
 ./vendor/bin/sail artisan migrate --seed
-```
 
-> If you use a specific seeder (e.g. AdminSeeder):
-```bash
-./vendor/bin/sail artisan db:seed --class=AdminSeeder
-```
-
-### 7) Frontend assets
-If the project uses Vite/Tailwind:
-```bash
 ./vendor/bin/sail npm install
 ./vendor/bin/sail npm run build
 ```
 
-### 8) Open the application
+Application will be available at:  
+ http://localhost
+
+---
+
+## Test Data
+
+The database is populated using seeders and includes:
+- One **admin** user
+- One or more **regular users**
+- Sample service requests
+
+Credentials can be adjusted in the database seeders if needed.
+
+---
+
+## Running Tests
+
+```bash
+./vendor/bin/sail artisan test
 ```
-http://localhost
-```
 
 ---
 
-## Database
-The project uses a relational database with migrations and seeders.
-A database dump is provided in `dump.sql`.
+## CI/CD
+
+The project includes a basic **GitHub Actions** workflow that:
+- Installs dependencies
+- Checks PHP syntax
+- Runs database migrations
+- Executes tests (if available)
+
+This pipeline simulates a minimal production-ready CI setup.
 
 ---
 
-## Deployment
-The application is deployed to Heroku using GitHub Actions CI/CD.
+## Notes for Reviewers
 
+- Business logic is separated from views
+- Validation is handled via Laravel Request validation
+- Role-based access control is implemented
+- Dockerized environment ensures consistent setup
+- Code follows Laravel best practices (KISS, DRY)
 ---
 
-## Notes
-- Session handling in production uses cookies.
-- `.env` is not committed; use `.env.example` as reference.
-
----
-
-## Screenshots
-See the `screenshots/` directory for:
-- User registration
-- User dashboard / requests list
-- Admin panel
-
----
 ## Author
-Kassymkyzy Raikhan
+
+**Raikhan Kassymkyzy**  
+Laravel / PHP Developer (Junior)
+
