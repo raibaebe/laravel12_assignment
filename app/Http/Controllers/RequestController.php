@@ -2,35 +2,41 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ticket;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-
-// Make sure to import the correct model for requests
+use Illuminate\Support\Facades\Auth;
 
 class RequestController extends Controller
 {
-    // Show the user dashboard (where the form will be)
     public function index()
     {
-        // Return the dashboard view
         return view('dashboard');
     }
 
-    // Store the new request in the database
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        // Validate the incoming request data
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
+        $validated = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string'],
         ]);
 
-        // Store the request in the database and associate it with the logged-in user
-        auth()->user()->requests()->create([
-            'title' => $request->title,
-            'description' => $request->description,
+        $user = Auth::user();
+        if (! $user) {
+            abort(403);
+        }
+
+        $user->tickets()->create([
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+             'category' => $request->input('category'),
+             'priority' => $request->input('priority'),
+            'due_date' => $request->input('due_date'),
+            'status' => 'new',
         ]);
 
-        // Redirect back to the dashboard with a success message
-        return redirect()->route('dashboard')->with('success', 'Request created successfully!');
+        return redirect()
+            ->route('dashboard')
+            ->with('success', 'Request created successfully!');
     }
 }
