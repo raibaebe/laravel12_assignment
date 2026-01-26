@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Ticket;
+use App\Http\Requests\StoreTicketRequest;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class RequestController extends Controller
@@ -14,24 +13,15 @@ class RequestController extends Controller
         return view('dashboard');
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(StoreTicketRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string'],
-        ]);
-
         $user = Auth::user();
         if (! $user) {
             abort(403);
         }
 
         $user->tickets()->create([
-            'title' => $validated['title'],
-            'description' => $validated['description'],
-             'category' => $request->input('category'),
-             'priority' => $request->input('priority'),
-            'due_date' => $request->input('due_date'),
+            ...$request->validated(),
             'status' => 'new',
         ]);
 
