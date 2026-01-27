@@ -16,7 +16,7 @@
                     </x-nav-link>
 
                     @if(auth()->user()?->is_admin)
-                        <x-nav-link :href="route('admin.requests.index')" :active="request()->routeIs('admin.requests.*')">
+                        <x-nav-link :href="route('admin.tickets.index')" :active="request()->routeIs('admin.requests.*')">
                             {{ __('Admin Panel') }}
                         </x-nav-link>
                     @endif
@@ -52,7 +52,7 @@
                     </x-slot>
                 </x-dropdown>
             </div>
-\
+
             <div class="-me-2 flex items-center sm:hidden">
                 <button @click="open = ! open"
                     class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none transition duration-150 ease-in-out">
@@ -76,7 +76,7 @@
             </x-responsive-nav-link>
 
             @if(auth()->user()?->is_admin)
-                <x-responsive-nav-link :href="route('admin.requests.index')" :active="request()->routeIs('admin.requests.*')">
+                <x-responsive-nav-link :href="route('admin.tickets.index')" :active="request()->routeIs('admin.requests.*')">
                     {{ __('Admin Panel') }}
                 </x-responsive-nav-link>
             @endif

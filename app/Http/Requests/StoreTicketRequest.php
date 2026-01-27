@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\TicketPriority;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreTicketRequest extends FormRequest
 {
@@ -16,10 +18,16 @@ class StoreTicketRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:255'],
             'category' => ['nullable', 'string', 'max:100'],
-            'priority' => ['nullable', 'string', 'max:50'],
-            'description' => ['required', 'string'],
-            'due_date' => ['nullable', 'date'],
-            'assignee_id' => ['nullable', 'integer'],
+            'priority' => ['required', Rule::enum(TicketPriority::class)],
+            'description' => ['required', 'string', 'max:5000'],
+            'due_date' => ['nullable', 'date', 'after_or_equal:today'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'due_date.after_or_equal' => 'The due date must be today or a future date.',
         ];
     }
 }

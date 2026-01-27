@@ -14,21 +14,27 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [TicketController::class, 'index'])
         ->name('dashboard');
 
-    Route::post('/tickets', [TicketController::class, 'store'])
-        ->name('tickets.store');
+    Route::resource('tickets', TicketController::class)
+        ->except(['index', 'create']);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['auth', 'admin'])->group(function () {
+Route::middleware(['auth', 'admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
 
-    Route::get('/admin/requests', [AdminController::class, 'index'])
-        ->name('admin.requests.index');
+        Route::get('/tickets', [AdminController::class, 'index'])
+            ->name('tickets.index');
 
-    Route::patch('/admin/requests/{ticket}', [AdminController::class, 'updateStatus'])
-        ->name('admin.requests.update');
-});
+        Route::patch('/tickets/{ticket}/status', [AdminController::class, 'updateStatus'])
+            ->name('tickets.update-status');
+
+        Route::patch('/tickets/{ticket}/assign', [AdminController::class, 'assignTicket'])
+            ->name('tickets.assign');
+    });
 
 require __DIR__.'/auth.php';
